@@ -1,0 +1,41 @@
+/* Dedicated CSS for search.html only */
+
+/* Match existing layout feel */
+.section.search-page {
+  padding-top: 28px;
+  padding-bottom: 56px;
+}
+
+.section.search-page .section-title {
+  margin-bottom: 16px;
+}
+
+.search-summary {
+  margin: 0 0 18px;
+}
+
+.search-results-list {
+  margin-top: 8px;
+}
+
+.search-result-card {
+  /* keep consistent spacing like other cards */
+  display: block;
+  width: 100%;
+  padding: 18px 20px;
+  border: 1px solid var(--border, #dbe4ee);
+  border-left: 5px solid var(--brand, #0f4c81);
+  border-radius: 8px;
+  background: var(--surface, #ffffff);
+  box-shadow: var(--shadow, 0 12px 30px rgba(15, 76, 129, .1));
+  text-decoration: none;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.search-result-card:hover,
+.search-result-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(15, 76, 129, .16);
+  outline: none;
+}
+

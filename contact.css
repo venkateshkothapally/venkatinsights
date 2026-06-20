@@ -1,0 +1,126 @@
+/* contacts.css */
+
+/* General Section Utilities */
+.section-subtitle {
+    font-size: 14px;
+    color: var(--muted, #666);
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+/* --- Contact & Base Cards --- */
+.service-card {
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Equal height cards */
+    text-decoration: none;
+    color: inherit;
+    background-color: var(--card-bg, #fff);
+}
+
+.service-card a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+/* --- Social Cards --- */
+.social-grid {
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.social-card {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.social-card i {
+    font-size: 40px; /* Specific requirement */
+    margin-bottom: 12px;
+}
+
+.social-card:hover, 
+.social-card:focus-visible {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific Social Brand Colors (Fallback if global classes are missing) */
+.social-card.pink { border-top: 4px solid #E1306C; }
+.social-card.black { border-top: 4px solid #000000; }
+
+/* --- Support Section & QR Placeholder --- */
+.support-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.qr-placeholder-card {
+    background-color: var(--card-bg, #fff);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.qr-placeholder {
+    width: 100%;
+    min-height: 220px;
+    border: 2px dashed var(--muted, #ccc);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: var(--muted, #666);
+}
+
+.qr-placeholder i {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.qr-placeholder img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: none; /* Hidden until you add an actual image source */
+}
+
+.qr-notes {
+    text-align: left;
+    width: 100%;
+    color: var(--muted, #666);
+    font-size: 14px;
+}
+
+/* --- Portal Cards --- */
+.portal-card {
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    text-align: cener;
+}
+
+.portal-card:hover, 
+.portal-card:focus-visible {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 600px) {
+    .card-grid {
+        grid-template-columns: 1fr; /* 1 column on small screens */
+        gap: 16px; /* Maintain spacing */
+    }
+}

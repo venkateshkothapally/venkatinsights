@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Papers - Mana Bhupalpally</title>
+    <!-- Use exactly the same layout configurations across platforms -->
+    <style>
+        :root {
+            --bg-body: #f4f6f9;
+            --bg-nav: linear-gradient(90deg, #003366, #0059b3, #007bff);
+            --bg-card: #ffffff;
+            --bg-card-lower: #161a1f;
+            --text-main: #161616;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 12px 30px rgba(0, 89, 179, 0.15);
+            --bg-search-wrap: #ffffff;
+            --text-search: #161616;
+            --gradient-header: linear-gradient(135deg, #0a2540, #114ba8);
+            --dropdown-bg: #ffffff;
+            --dropdown-text: #161616;
+            --dropdown-hover: #f0f4f8;
+            --nav-font-size: 14px;
+            --nav-padding-v: 18px;
+            --nav-padding-h: 16px;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0c1014;
+            --bg-nav: linear-gradient(90deg, #0f172a, #1e293b, #334155);
+            --bg-card: #1e252f;
+            --bg-card-lower: #111519;
+            --text-main: #f4f4f4;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 12px 35px rgba(69, 137, 255, 0.25);
+            --bg-search-wrap: #161a1f;
+            --text-search: #f4f4f4;
+            --dropdown-bg: #ff9800;
+            --dropdown-text: #ffffff;
+            --dropdown-hover: #e68a00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; }
+
+        .ribbon-nav {
+            width: 100%;
+            background: var(--bg-nav);
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .ribbon-nav ul { display: flex; list-style: none; align-items: center; }
+        .ribbon-nav ul li a {
+            display: block;
+            color: #ffffff;
+            text-decoration: none;
+            padding: var(--nav-padding-v) var(--nav-padding-h);
+            font-size: var(--nav-font-size);
+            font-weight: 600;
+        }
+
+        .ribbon-nav ul li a:hover, .ribbon-nav ul li a.active { background: #ff9800; }
+        .nav-actions { display: flex; align-items: center; gap: 16px; position: relative; }
+
+        .search-container-relative { position: relative; }
+        .search-wrapper-nav {
+            background: var(--bg-search-wrap);
+            width: 320px;
+            padding: 6px 12px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box-nav-input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 4px 6px;
+            font-size: 14px;
+            background: transparent;
+            color: var(--text-search);
+        }
+
+        .search-results-dropdown {
+            position: absolute;
+            top: 110%;
+            left: 0;
+            width: 100%;
+            max-height: 320px;
+            overflow-y: auto;
+            background: var(--dropdown-bg);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            z-index: 10000;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-result-item {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+            color: var(--dropdown-text);
+        }
+
+        .search-result-item:hover { background: var(--dropdown-hover); }
+        .theme-btn {
+            background: transparent;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        @keyframes theme-pop-spin {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(0.8) rotate(180deg); opacity: 0.3; }
+            100% { transform: scale(1) rotate(360deg); opacity: 1; }
+        }
+        .animate-toggle { animation: theme-pop-spin 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        .portal-container { max-width: 1200px; margin: 24px auto; padding: 0 20px; }
+        .v-header {
+            background: var(--gradient-header);
+            color: #ffffff;
+            padding: 45px 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+
+        /* 📰 MATCHING REFERENCE IMAGE CARD GRID LAYOUT SYSTEM */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card-lower);
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* White logo box frame strictly maps to the layout visual styles */
+        .logo-box {
+            background: #ffffff;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Custom typography fallback matching exact branding headers */
+        .telugu-logo {
+            font-size: 34px;
+            font-weight: 800;
+            color: #000000;
+            letter-spacing: -1px;
+        }
+        .eenadu-blue { color: #0059b3; }
+        .sakshi-red { color: #ce1212; }
+        .abn-dark { color: #1e1e1e; }
+        .nt-bold { color: #007bff; }
+
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .badge.epaper {
+            display: inline-block;
+            background: #ff9800;
+            color: #000000;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-content h3 {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        footer {
+            background: var(--gradient-header);
+            color: #ffffff;
+            padding: 35px 20px;
+            text-align: center;
+            border-radius: 16px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <nav class="ribbon-nav">
+        <ul>
+            <li><a href="home.html">🏠 Home</a></li>
+            <li><a href="index.html">🏛 Govt Services</a></li>
+            <li><a href="education-services.html">🎓 Education</a></li>
+            <li><a href="newspapers.html" class="active">📰 News Papers</a></li>
+            <li><a href="tools.html">🛠 Tools</a></li>
+            <li><a href="about.html">ℹ About</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+            <div class="search-container-relative">
+                <div class="search-wrapper-nav">
+                    <input type="text" id="globalPortalSearch" class="search-box-nav-input" placeholder="Search papers..." onkeyup="executeGlobalSearch()">
+                </div>
+                <div class="search-results-dropdown" id="searchDropdownMenu"></div>
+            </div>
+            <button class="theme-btn" id="portalThemeToggleBtn" onclick="togglePortalTheme()">⏾ Dark</button>
+        </div>
+    </nav>
+
+    <div class="portal-container">
+        <div class="v-header">
+            <h1>Telugu e-Papers Hub</h1>
+            <p>Read daily morning news publications directly at one click</p>
+        </div>
+
+        <!-- Whole clickable cards with buttons eliminated completely -->
+        <div class="grid" id="cardContainer">
+            <a class="card" href="https://epaper.eenadu.net" target="_blank">
+                <div class="logo-box"><div class="telugu-logo eenadu-blue">ఈనాడు</div></div>
+                <div class="card-content">
+                    <span class="badge epaper">PAPER</span>
+                    <h3>Eenadu Paper</h3>
+                </div>
+            </a>
+
+            <a class="card" href="https://epaper.sakshi.com" target="_blank">
+                <div class="logo-box"><div class="telugu-logo sakshi-red">సాక్షి</div></div>
+                <div class="card-content">
+                    <span class="badge epaper">PAPER</span>
+                    <h3>Sakshi Paper</h3>
+                </div>
+            </a>
+
+            <a class="card" href="https://epaper.andhrajothy.com" target="_blank">
+                <div class="logo-box"><div class="telugu-logo abn-dark">ABN</div></div>
+                <div class="card-content">
+                    <span class="badge epaper">PAPER</span>
+                    <h3>Andhra Jyothy Paper</h3>
+                </div>
+            </a>
+
+            <a class="card" href="https://epaper.ntnews.com" target="_blank">
+                <div class="logo-box"><div class="telugu-logo nt-bold">నమస్తే తెలంగాణ</div></div>
+                <div class="card-content">
+                    <span class="badge epaper">PAPER</span>
+                    <h3>Namaste Telangana Paper</h3>
+                </div>
+            </a>
+        </div>
+
+        <footer>
+            <h3>Government Services Portal</h3>
+            <p>Copyright © 2026 Venkat Insights | Developed by Venkatesh Kothapally</p>
+        </footer>
+    </div>
+
+    <script>
+        const searchableIndex = [
+            { title: "Eenadu Paper", category: "Telugu News", page: "News Papers" },
+            { title: "Sakshi Paper", category: "Telugu News", page: "News Papers" },
+            { title: "Andhra Jyothy Paper", category: "Telugu News", page: "News Papers" },
+            { title: "Namaste Telangana Paper", category: "Telugu News", page: "News Papers" }
+        ];
+
+        function executeGlobalSearch() {
+            const input = document.getElementById("globalPortalSearch");
+            const filter = input.value.toLowerCase().trim();
+            const dropdown = document.getElementById("searchDropdownMenu");
+            
+            dropdown.innerHTML = "";
+            if (filter === "") {
+                dropdown.style.display = "none";
+                return;
+            }
+
+            const matches = searchableIndex.filter(item => item.title.toLowerCase().includes(filter));
+
+            if (matches.length > 0) {
+                dropdown.style.display = "block";
+                matches.forEach(item => {
+                    const anchor = document.createElement("a");
+                    anchor.className = "search-result-item";
+                    anchor.href = "#";
+                    anchor.innerHTML = `<h4>${item.title}</h4><span>${item.category} | ${item.page}</span>`;
+                    dropdown.appendChild(anchor);
+                });
+            } else {
+                dropdown.style.display = "none";
+            }
+        }
+
+        function togglePortalTheme() {
+            const currentBody = document.body;
+            const themeBtn = document.getElementById("portalThemeToggleBtn");
+            themeBtn.classList.add("animate-toggle");
+            setTimeout(() => themeBtn.classList.remove("animate-toggle"), 400);
+
+            if (currentBody.hasAttribute("data-theme")) {
+                currentBody.removeAttribute("data-theme");
+                themeBtn.innerHTML = "☼ Light";
+            } else {
+                currentBody.setAttribute("data-theme", "dark");
+                themeBtn.innerHTML = "⏾ Dark";
+            }
+        }
+
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest(".search-container-relative")) {
+                document.getElementById("searchDropdownMenu").style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>

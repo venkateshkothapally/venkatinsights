@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search | Venkat Insights</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="search.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<header class="navbar">
+
+<div class="logo">
+<i class="fas fa-search"></i>
+<span>Venkat Insights</span>
+</div>
+
+<nav>
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="government.html">Government</a></li>
+<li><a href="educational.html">Education</a></li>
+<li><a href="jobs.html">Jobs</a></li>
+<li><a href="newspapers.html">News</a></li>
+<li><a href="tools.html">Tools</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
+
+<form class="search-area" role="search" action="search.html">
+<input type="search" id="searchInput" name="q" placeholder="Search all services..." autocomplete="off">
+<button type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
+</form>
+
+</header>
+
+<section class="section search-page">
+<h1 class="section-title">Search Results</h1>
+<p id="searchSummary" class="search-summary">Type a service, exam, job, newspaper, or tool name to search the full site.</p>
+<div id="searchResultsPage" class="search-results-list"></div>
+</section>
+
+<footer>
+<h3>Venkat Insights</h3>
+<p>Government Services | Education | Jobs | News | Tools</p>
+<p>Copyright (c) 2026 Venkat Insights | Developed by Venkatesh Kothapally</p>
+</footer>
+
+<button id="darkModeBtn" class="dark-toggle" aria-label="Toggle dark mode">D</button>
+
+<script src="search-data.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
