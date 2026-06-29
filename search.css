@@ -39,3 +39,42 @@
   outline: none;
 }
 
+/* Search highlight (glow pulse + smooth border/shadow) */
+.service-card.search-target {
+  z-index: 5;
+  border-color: rgba(245, 158, 11, 1) !important;
+  transform: translateY(-4px) scale(1.035) !important;
+  box-shadow:
+    0 0 0 3px rgba(245, 158, 11, .25),
+    0 0 18px 4px rgba(245, 158, 11, .14),
+    0 20px 46px rgba(15, 76, 129, .22) !important;
+  animation: searchCardGlowPulse .9s ease-in-out infinite;
+}
+
+.card.newspaper-search-target {
+  z-index: 5;
+  border-color: rgba(245, 158, 11, 1) !important;
+  transform: translateY(-4px) scale(1.035) !important;
+  box-shadow:
+    0 0 0 3px rgba(245, 158, 11, .25),
+    0 0 18px 4px rgba(245, 158, 11, .14),
+    0 20px 46px rgba(15, 76, 129, .22) !important;
+  animation: searchCardGlowPulse .9s ease-in-out infinite;
+  scroll-margin-top: 150px;
+  outline: none;
+}
+
+@keyframes searchCardGlowPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px rgba(245, 158, 11, .22),
+      0 0 18px 4px rgba(245, 158, 11, .14),
+      0 18px 42px rgba(15, 76, 129, .18);
+  }
+  50% {
+    box-shadow:
+      0 0 0 7px rgba(245, 158, 11, .42),
+      0 0 28px 10px rgba(245, 158, 11, .22),
+      0 24px 52px rgba(15, 76, 129, .26);
+  }
+}

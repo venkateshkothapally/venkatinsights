@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up | Venkat Insights</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="search.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <i class="fas fa-user-plus"></i>
+    <span>Venkat Insights</span>
+  </div>
+  <nav>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="government.html">Government</a></li>
+      <li><a href="educational.html">Education</a></li>
+      <li><a href="jobs.html">Jobs</a></li>
+      <li><a href="newspapers.html">News</a></li>
+      <li><a href="tools.html">Tools</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="login.html" class="active"><i class="fas fa-right-to-bracket"></i>Login</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="section">
+  <h1 class="section-title">Create Account</h1>
+  <p class="section-subtitle">Mock signup with Gmail/Google/mobile + WhatsApp verification (localStorage demo).</p>
+
+  <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+    <form class="service-card" id="signupForm" style="gap:14px;">
+      <i class="fas fa-user" aria-hidden="true" style="font-size:28px;color:var(--brand);"></i>
+      <h3 style="margin-bottom:0;">Signup</h3>
+
+      <label style="font-weight:800;color:var(--brand-dark);">Full Name</label>
+      <input name="fullName" required placeholder="Your name" style="width:100%;min-height:40px;border-radius:8px;border:1px solid var(--border);padding:0 12px;" />
+
+      <label style="font-weight:800;color:var(--brand-dark);">Gmail / Google Email</label>
+      <input type="email" name="email" required placeholder="name@gmail.com" style="width:100%;min-height:40px;border-radius:8px;border:1px solid var(--border);padding:0 12px;" />
+
+      <label style="font-weight:800;color:var(--brand-dark);">Mobile Number</label>
+      <input name="mobile" required inputmode="numeric" placeholder="10-digit mobile" style="width:100%;min-height:40px;border-radius:8px;border:1px solid var(--border);padding:0 12px;" />
+
+      <label style="font-weight:800;color:var(--brand-dark);">Password</label>
+      <input type="password" name="password" required placeholder="Create password" style="width:100%;min-height:40px;border-radius:8px;border:1px solid var(--border);padding:0 12px;" />
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;">
+        <button type="submit" class="card-open-link" style="flex:1;min-width:180px;justify-content:center;">Send OTP</button>
+        <a href="login.html" class="card-open-link" style="flex:1;min-width:180px;background:rgba(15,76,129,.08);border:1px solid var(--border);color:var(--text);justify-content:center;text-decoration:none;">Go to Login</a>
+      </div>
+
+      <div id="authMessage" style="color:var(--muted);font-weight:700;min-height:22px;"></div>
+    </form>
+
+    <div class="service-card" style="gap:14px;">
+      <i class="fab fa-whatsapp" aria-hidden="true" style="font-size:28px;color:var(--brand);"></i>
+      <h3 style="margin-bottom:0;">How verification works (demo)</h3>
+      <p class="section-subtitle" style="margin-top:0;">This is a static-site demo. Real Gmail/Google OAuth and SMS/WhatsApp OTP require a backend (Firebase/Node/PHP) and providers.</p>
+      <ul style="margin-left:18px;color:var(--muted);font-weight:700;">
+        <li>We generate an OTP and store a hashed user session in localStorage.</li>
+        <li>“WhatsApp” uses an API link preview, but OTP entry is manual in this demo.</li>
+        <li>After entering OTP, you can login.</li>
+      </ul>
+
+      <div class="card-grid" style="grid-template-columns:1fr;gap:10px;">
+        <a class="service-card" href="otp.html" style="text-decoration:none;color:inherit;border:1px dashed var(--border);padding:16px;">
+          <h3 style="margin:0;">Go to OTP Verification Page</h3>
+          <p style="margin:6px 0 0;color:var(--muted);font-weight:700;">Use the OTP shown by the app after “Send OTP”.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h3>Venkat Insights</h3>
+  <p>Government Services | Education | Jobs | News | Tools</p>
+  <p>Copyright (c) 2026 Venkat Insights</p>
+</footer>
+
+<script src="auth.js"></script>
+<script>
+  // Route: signup.html -> auth.js handles form submission.
+  window.__AUTH_PAGE__ = 'signup';
+</script>
+</body>
+</html>
+

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Venkat Insights</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="search.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <i class="fas fa-right-to-bracket"></i>
+    <span>Venkat Insights</span>
+  </div>
+  <nav>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="government.html">Government</a></li>
+      <li><a href="educational.html">Education</a></li>
+      <li><a href="jobs.html">Jobs</a></li>
+      <li><a href="newspapers.html">News</a></li>
+      <li><a href="tools.html">Tools</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="signup.html" class="active"><i class="fas fa-user-plus"></i>Sign Up</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="section">
+  <h1 class="section-title">Login</h1>
+  <p class="section-subtitle">Mock login using email + password stored in localStorage (demo only).</p>
+
+  <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+    <form class="service-card" id="loginForm" style="gap:14px;">
+      <i class="fas fa-lock" aria-hidden="true" style="font-size:28px;color:var(--brand);"></i>
+      <h3 style="margin-bottom:0;">Login with Gmail/Google</h3>
+
+      <label style="font-weight:800;color:var(--brand-dark);">Email</label>
+      <input type="email" name="email" required placeholder="name@gmail.com" style="width:100%;min-height:40px;border-radius:8px;border:1px solid var(--border);padding:0 12px;" />
+
+      <label style="font-weight:800;color:var(--brand-dark);">Password</label>
+      <input type="password" name="password" required placeholder="Your password" style="width:100%;min-height:40px;border-radius:8px;border:1px solid var(--border);padding:0 12px;" />
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;">
+        <button type="submit" class="card-open-link" style="flex:1;min-width:180px;justify-content:center;">Login</button>
+        <a href="signup.html" class="card-open-link" style="flex:1;min-width:180px;background:rgba(15,76,129,.08);border:1px solid var(--border);color:var(--text);justify-content:center;text-decoration:none;">Create Account</a>
+      </div>
+
+      <div id="authMessage" style="color:var(--muted);font-weight:700;min-height:22px;"></div>
+    </form>
+
+    <div class="service-card" style="gap:14px;">
+      <i class="fab fa-whatsapp" aria-hidden="true" style="font-size:28px;color:var(--brand);"></i>
+      <h3 style="margin-bottom:0;">Need OTP?</h3>
+      <p class="section-subtitle" style="margin-top:0;">If you created an account, verify OTP on the OTP page.</p>
+      <a class="card-open-link" href="otp.html" style="text-decoration:none;justify-content:center;">Go to OTP Verification</a>
+
+      <div style="margin-top:10px;" class="service-card" id="logoutBox">
+        <h3 style="margin:0;">Logged-in user</h3>
+        <p style="margin:6px 0 0;color:var(--muted);font-weight:700;" id="loggedUser">Not logged in</p>
+        <button type="button" class="card-action-btn" id="logoutBtn" style="background:rgba(245,158,11,.12);border-color:transparent;">Logout</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h3>Venkat Insights</h3>
+  <p>Government Services | Education | Jobs | News | Tools</p>
+  <p>Copyright (c) 2026 Venkat Insights</p>
+</footer>
+
+<script src="auth.js"></script>
+<script>
+  window.__AUTH_PAGE__ = 'login';
+</script>
+</body>
+</html>
+

@@ -88,10 +88,16 @@ function getSearchResults(query, limit = 50) {
 }
 
 function buildCardUrl(item) {
-    const params = new URLSearchParams({ card: item.title });
+    // Keep UI human-readable (card/category). Use hash + a separate highlight param to
+    // reliably pick the exact match when multiple cards exist.
+    const params = new URLSearchParams({
+        card: item.title,
+        highlight: item.title,
+    });
     if (item.category) params.set("category", item.category);
     return `${item.page}?${params.toString()}#${slugify(item.title)}`;
 }
+
 
 function navigateToSearch(query) {
     const value = String(query || "").trim();
@@ -131,6 +137,11 @@ function createSearchResult(item, compact = false) {
 function initializeSearch() {
     if (searchInput) {
         const resultBox = document.createElement("div");
+
+
+    // Ensure this element exists before any reveal/animation logic runs.
+    // (Avoids layout glitches on fast navigation like search.html?q=...)
+
         resultBox.id = "searchResults";
         resultBox.hidden = true;
         resultBox.setAttribute("role", "listbox");
@@ -377,6 +388,7 @@ function enhanceCard(card, index) {
 }
 
 function revealCards(cards) {
+
     if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         cards.forEach((card) => card.classList.add("is-visible"));
         return;
@@ -400,10 +412,21 @@ function highlightRequestedCard(cards) {
     const requestedCategory = normalizeText(params.get("category"));
     const hashId = decodeURIComponent(window.location.hash.slice(1));
     const hash = normalizeText(hashId.replace(/-/g, " "));
+
+    // Allow a separate query parameter (from search.html) to identify the exact match.
+    // Example: ?card=Police&category=Emergency%20Services&highlight=Police
+    const exactMatch = normalizeText(params.get("highlight"));
+
+    // Keep highlight consistent with how the exact match was generated.
+    // If exactMatch exists, prefer it over the normalized hash fragment.
+    const highlightPrefer = exactMatch || title;
+
+
     if (!requestedTitle && !hash) return;
 
     const title = requestedTitle || hash;
     const cardFromHash = hashId ? document.getElementById(hashId) : null;
+
     let candidates = cardFromHash?.classList.contains("service-card") ? [cardFromHash] : [];
     if (!candidates.length) candidates = cards.filter((card) => card.dataset.cardTitle === title);
     if (!candidates.length) candidates = cards.filter((card) => card.dataset.cardTitle.includes(title) || title.includes(card.dataset.cardTitle));
@@ -414,16 +437,25 @@ function highlightRequestedCard(cards) {
             return compactCardTitle === compactTitle || compactCardTitle.includes(compactTitle) || compactTitle.includes(compactCardTitle);
         });
     }
-    const card = candidates.find((item) => requestedCategory && item.dataset.cardCategory === requestedCategory) || candidates[0];
+    const highlightNeedle = exactMatch || title;
+
+    // If multiple matches exist, try to find the exact human-readable card title.
+    const exactCandidate = candidates.find((item) => item.dataset.cardTitle === highlightNeedle);
+    const card = (requestedCategory
+        ? (exactCandidate && exactCandidate.dataset.cardCategory === requestedCategory ? exactCandidate : candidates.find((item) => item.dataset.cardCategory === requestedCategory && item.dataset.cardTitle === highlightNeedle))
+        : exactCandidate) || candidates.find((item) => requestedCategory && item.dataset.cardCategory === requestedCategory) || candidates[0];
+
     if (!card) return;
 
     setCardExpanded(card, true);
     card.classList.add("is-visible", "search-target");
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     requestAnimationFrame(() => {
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
+        card.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "center" });
         window.setTimeout(() => card.focus({ preventScroll: true }), 450);
     });
     window.setTimeout(() => card.classList.remove("search-target"), SEARCH_HIGHLIGHT_MS);
+
 }
 
 /* Newspapers retain their original full-card links. Search highlighting is the
@@ -483,10 +515,20 @@ function initializeCards() {
     // Do not inject Open buttons, expand/collapse controls, card-actions/details, etc.
     if (page === "contact.html") return;
 
+    // Ensure we only enable the modal system on jobs.html (per your request).
+    document.body.dataset.modalEnabled = page === "jobs.html" ? "true" : "false";
+
+
     // Latest-update tiles use the same reusable interaction model as service cards.
     document.querySelectorAll(".update-card").forEach((card) => card.classList.add("service-card"));
 
+
     const cards = [...document.querySelectorAll(".service-card")];
+
+    // Include search result cards in page reveal animation.
+    // (Prevents “cards not showing at top” perception when navigating to search.html.)
+    const searchCards = [...document.querySelectorAll(".search-result-card")];
+
 
     // Emergency cards are customized (phone button + compact layout). Skip enhancement injection.
     cards
@@ -494,7 +536,8 @@ function initializeCards() {
         .forEach(enhanceCard);
 
     // Still reveal/highlight them visually.
-    revealCards(cards);
+    revealCards(cards.concat(searchCards));
+
     highlightRequestedCard(cards);
     initializeNewspaperSearchHighlight();
 
@@ -505,6 +548,215 @@ function initializeCards() {
 
 initializeSearch();
 initializeCards();
+
+// ================= CARD MODAL (jobs.html only) =================
+(function initCardModal() {
+    const page = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+    if (page !== "jobs.html") return;
+
+    const MODAL_BACKDROP_ID = "cardModalBackdrop";
+    const MODAL_CONTAINER_ID = "cardModal";
+
+    let backdrop = document.getElementById(MODAL_BACKDROP_ID);
+    if (!backdrop) {
+        backdrop = document.createElement("div");
+        backdrop.id = MODAL_BACKDROP_ID;
+        backdrop.className = "card-modal-backdrop";
+        backdrop.setAttribute("role", "dialog");
+        backdrop.setAttribute("aria-modal", "true");
+        backdrop.setAttribute("aria-hidden", "true");
+
+        backdrop.innerHTML = `
+            <div class="card-modal" id="${MODAL_CONTAINER_ID}">
+                <div class="card-modal-header">
+                    <div class="card-modal-title">
+                        <h2 id="cardModalTitle">Loading...</h2>
+                        <div class="meta" id="cardModalMeta"></div>
+                    </div>
+                    <button type="button" class="card-modal-close" id="cardModalClose" aria-label="Close modal">✕</button>
+                </div>
+                <div class="card-modal-body">
+                    <p class="card-modal-description" id="cardModalDescription"></p>
+
+                    <div class="card-modal-actions" id="cardModalActions"></div>
+
+                    <div class="card-modal-section">
+                        <h3>How it works</h3>
+                        <ul id="cardModalHow"></ul>
+                    </div>
+
+                    <div class="card-modal-section">
+                        <h3>Application Form</h3>
+                        <ul id="cardModalForm"></ul>
+                    </div>
+
+                    <div class="card-modal-section">
+                        <h3>Eligibility</h3>
+                        <ul id="cardModalEligibility"></ul>
+                    </div>
+
+                    <div class="card-modal-section">
+                        <h3>Status</h3>
+                        <ul id="cardModalStatus"></ul>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(backdrop);
+    }
+
+    const titleEl = document.getElementById("cardModalTitle");
+    const metaEl = document.getElementById("cardModalMeta");
+    const descEl = document.getElementById("cardModalDescription");
+    const actionsEl = document.getElementById("cardModalActions");
+
+    const howEl = document.getElementById("cardModalHow");
+    const formEl = document.getElementById("cardModalForm");
+    const eligEl = document.getElementById("cardModalEligibility");
+    const statusEl = document.getElementById("cardModalStatus");
+
+    const closeBtn = document.getElementById("cardModalClose");
+
+    let lastScrollY = 0;
+    let lastFocused = null;
+
+    function setList(ul, items) {
+        ul.replaceChildren();
+        items.forEach((t) => {
+            const li = document.createElement("li");
+            li.textContent = t;
+            ul.appendChild(li);
+        });
+    }
+
+    function extractCardInfo(card) {
+        const cardTitle = card.querySelector("h3")?.textContent?.trim() || "Service";
+        const cardDescription = card.querySelector("p")?.textContent?.trim() || "";
+        const category = sectionName(card);
+
+        const openLink = card.querySelector('a[href]')
+            ? [...card.querySelectorAll('a[href]')].find(a => normalizeText(a.textContent) === "open")
+            : null;
+
+        const fallbackOpenLink = openLink || [...card.querySelectorAll('a[href]')].find(a => !a.classList.contains("card-modal-open"));
+
+        const url = fallbackOpenLink?.getAttribute("href") || "#";
+        const text = openLink ? (openLink.textContent.trim() || "Open") : "Open";
+
+        return { cardTitle, cardDescription, category, url, text };
+    }
+
+    function openModalForCard(card) {
+        const info = extractCardInfo(card);
+
+        lastScrollY = window.scrollY || 0;
+        lastFocused = document.activeElement;
+
+        titleEl.textContent = info.cardTitle;
+        metaEl.textContent = info.category || "Jobs";
+        descEl.textContent = info.cardDescription || `Explore official resources for ${info.cardTitle}.`;
+
+        // Build actions
+        actionsEl.replaceChildren();
+        const primary = document.createElement("a");
+        primary.className = "card-modal-primary";
+        primary.href = info.url && info.url !== "#" ? info.url : "#";
+        primary.target = "_blank";
+        primary.rel = "noopener noreferrer";
+        primary.textContent = info.text || "Open";
+
+        actionsEl.appendChild(primary);
+
+        const secondary = document.createElement("button");
+        secondary.className = "card-modal-secondary";
+        secondary.type = "button";
+        secondary.textContent = "Close";
+        secondary.addEventListener("click", closeModal);
+        actionsEl.appendChild(secondary);
+
+        // Static content ONLY on jobs.html (as requested)
+        const t = info.cardTitle;
+        setList(howEl, [
+            `Open the official link for ${t}.`,
+            "Read eligibility and requirements before applying.",
+            "Fill the form using the official website instructions.",
+            "Track updates using the status/notification section if available."
+        ]);
+
+        setList(formEl, [
+            `Application form for ${t} is available on the official site.`,
+            "If the form is not available yet, check for 'Apply Online' announcements."
+        ]);
+
+        setList(eligEl, [
+            "Eligibility depends on the official notification (age limit, qualification, category).",
+            "Refer to the official notification for exact cut-offs."
+        ]);
+
+        setList(statusEl, [
+            "Status is updated through official releases on the notification portal.",
+            "Use the official link provided above to check latest updates."
+        ]);
+
+        backdrop.classList.add("is-open");
+        backdrop.setAttribute("aria-hidden", "false");
+        closeBtn.focus({ preventScroll: true });
+
+        // Prevent body scroll while modal open
+        document.documentElement.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+        backdrop.classList.remove("is-open");
+        backdrop.setAttribute("aria-hidden", "true");
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+
+        // restore scroll and focus
+        window.scrollTo({ top: lastScrollY, behavior: "auto" });
+        if (lastFocused && typeof lastFocused.focus === "function") {
+            lastFocused.focus({ preventScroll: true });
+        }
+    }
+
+    // Close on backdrop click
+    backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop) closeModal();
+    });
+
+    // Close button
+    closeBtn?.addEventListener("click", closeModal);
+
+    // ESC closes
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && backdrop.classList.contains("is-open")) closeModal();
+    });
+
+    // Make cards open modal on click (but do NOT steal the existing 'Open' link navigation)
+    document.addEventListener("click", (e) => {
+        const card = e.target.closest(".service-card");
+        if (!card) return;
+        if (card.classList.contains("emergency-card")) return; // keep emergency tel: behavior
+
+        // If user clicked the internal Open link, allow normal navigation
+        const clickedOpenLink = e.target.closest("a[href]") && normalizeText(e.target.closest("a[href]").textContent) === "open";
+        if (clickedOpenLink) return;
+
+        // Prevent also when clicking already generated card controls (we keep existing behaviour)
+        const isInsideCardDetails = !!e.target.closest(".card-details, .card-actions");
+        if (isInsideCardDetails) {
+            // Only toggle expansion on Enter handled in script.js; for click we avoid opening modal there.
+            // (Stops modal from fighting with expandable cards.)
+            return;
+        }
+
+        // Prevent navigation when the card or its overlay is clickable
+        e.preventDefault?.();
+        openModalForCard(card);
+    });
+})();
+
 
 const topBtn = document.createElement("button");
 topBtn.id = "topBtn";

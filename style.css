@@ -17,6 +17,13 @@
     padding: 0;
 }
 
+/* Prevent accidental horizontal overflow from wide/absolute elements */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
 html {
     scroll-behavior: smooth;
 }
@@ -1109,15 +1116,45 @@ html { scroll-behavior: smooth; }
     .navbar {
         position: static;
         padding: 14px 16px;
+        grid-template-columns: 1fr;
     }
+
+    /* Make search area responsive on small screens */
+    .navbar .search-area {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .navbar .search-area input {
+        min-width: 0;
+    }
+
+
+    .navbar nav {
+        min-width: 0;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        overflow-x: hidden;
+        justify-content: flex-start;
+    }
+
+    .nav-links a {
+        white-space: nowrap;
+    }
+
+
 
     .nav-links {
         justify-content: flex-start;
         width: 100%;
-        overflow-x: auto;
+        overflow-x: hidden;
         padding-bottom: 4px;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
+        gap: 6px;
     }
+
 
     .nav-links a {
         white-space: nowrap;
@@ -1177,3 +1214,194 @@ html { scroll-behavior: smooth; }
         height: 44px;
     }
 }
+
+/* ================= CARD MODAL (popup) ================= */
+.card-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    z-index: 10000;
+}
+
+.card-modal-backdrop.is-open {
+    display: flex;
+}
+
+.card-modal {
+    width: min(820px, 92vw);
+    max-height: calc(100vh - 36px);
+    overflow: auto;
+    border-radius: 20px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 22px 70px rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border);
+    transform: translateY(10px) scale(0.98);
+    opacity: 0;
+    transition: transform .25s ease, opacity .25s ease;
+    position: relative;
+}
+
+.card-modal-backdrop.is-open .card-modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.dark-mode .card-modal {
+    background: var(--surface);
+}
+
+.card-modal-header {
+    padding: 18px 18px 8px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.card-modal-title {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card-modal-title h2 {
+    font-size: clamp(18px, 2.5vw, 26px);
+    line-height: 1.2;
+}
+
+.card-modal-title .meta {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.card-modal-close {
+    border: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    cursor: pointer;
+    background: rgba(15, 76, 129, .08);
+    color: var(--text);
+    font-weight: 900;
+    transition: transform .15s ease, background .2s ease;
+}
+
+.card-modal-close:hover,
+.card-modal-close:focus-visible {
+    background: rgba(15, 76, 129, .16);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.card-modal-body {
+    padding: 0 18px 18px;
+}
+
+.card-modal-description {
+    color: var(--muted);
+    margin: 6px 0 16px;
+}
+
+.card-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 14px 0 10px;
+}
+
+.card-modal-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 11px 16px;
+    border-radius: 12px;
+    border: 0;
+    background: var(--accent);
+    color: #111827;
+    font-weight: 900;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.card-modal-primary:hover,
+.card-modal-primary:focus-visible {
+    background: #fbbf24;
+    outline: none;
+}
+
+.card-modal-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 11px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(15, 76, 129, .08);
+    color: var(--text);
+    font-weight: 900;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.card-modal-secondary:hover,
+.card-modal-secondary:focus-visible {
+    outline: none;
+    background: rgba(15, 76, 129, .14);
+}
+
+.card-modal-section {
+    margin-top: 16px;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+}
+
+.card-modal-section h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.card-modal-section ul {
+    margin-left: 18px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.card-modal-section li {
+    margin: 6px 0;
+}
+
+/* Only add simple glow on card hover for modal-enabled pages */
+body[data-modal-enabled="true"] .service-card {
+    position: relative;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+body[data-modal-enabled="true"] .service-card:hover {
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, .22), 0 18px 46px rgba(15, 76, 129, .18);
+}
+
+@media (max-width: 620px) {
+    .card-modal {
+        width: 95vw;
+        border-radius: 18px;
+    }
+
+    .card-modal-header {
+        padding: 16px 14px 8px;
+    }
+
+    .card-modal-body {
+        padding: 0 14px 14px;
+    }
+}
+
+
