@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Main info | Venkat Insights</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+<style>
+  /* Main specific tweaks that must also work in dark mode */
+  body {
+    background: var(--bg-body, var(--bg));
+    color: var(--text-main, var(--text));
+  }
+
+  /* when .dark-mode is toggled by script.js */
+  .dark-mode body {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .section-title {
+    color: var(--text-main, var(--text));
+    border-left-color: var(--primary, var(--accent));
+  }
+
+  .card {
+    background: var(--surface, var(--bg-card));
+    border-color: var(--border, var(--border-color));
+    box-shadow: var(--shadow);
+  }
+
+  .card:hover {
+    background: var(--surface-soft, var(--bg-card-hover));
+  }
+
+  .logo-box {
+    border-bottom-color: var(--border, var(--border-color));
+  }
+
+  .card-content p,
+  .card-content h3 {
+    color: inherit;
+  }
+
+  .badge.news {
+    background: var(--accent, var(--primary));
+    color: #fff;
+  }
+
+  .badge.epaper {
+    background: var(--accent, var(--primary));
+    color: #000;
+  }
+
+  /* Dedicated CSS for newspapers.html so it does NOT depend on style.css internals */
+
+:root {
+  --news-bg: #0f172a;
+  --news-surface: #ffffff;
+  --news-text: #0f172a;
+  --news-muted: #475569;
+  --news-border: rgba(0, 0, 0, 0.1);
+  --news-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --news-shadow-hover: 0 12px 30px rgba(15, 76, 129, 0.16);
+  --news-card-radius: 16px;
+  --news-nav-radius: 16px;
+  --news-primary: #0ea5e9;
+  --news-badge-news: #0ea5e9;
+  --news-badge-epaper: #f59e0b;
+}
+
+body {
+  background: var(--bg, #f4f6f9);
+  color: var(--text, var(--news-text));
+}
+
+/* Dark mode support (tied to style.css .dark-mode variables) */
+.dark-mode {
+  --news-bg: #111827;
+  --news-surface: var(--surface, #1f2937);
+  --news-text: var(--text, #f3f4f6);
+  --news-muted: var(--muted, #cbd5e1);
+  --news-border: var(--border, rgba(255,255,255,0.15));
+  --news-shadow: var(--shadow, 0 12px 30px rgba(0, 0, 0, .22));
+  --news-shadow-hover: 0 12px 30px rgba(14, 165, 233, 0.18);
+  --news-badge-news: var(--accent, #0ea5e9);
+}
+
+/* Keep newspaper header spacing consistent */
+.section {
+  background: var(--bg, #f4f6f9);
+  color: var(--news-text);
+}
+
+/* Keep newspaper header spacing consistent */
+.section {
+  max-width: auto;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  border-left: 5px solid var(--news-primary);
+  padding-left: 15px;
+  color: var(--news-text);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.card {
+  text-decoration: none;
+  color: var(--news-text);
+  background: var(--news-surface);
+  border-radius: var(--news-card-radius);
+  overflow: hidden;
+  transition: transform .25s ease, box-shadow .25s ease;
+  border: 1px solid var(--news-border);
+  box-shadow: var(--news-shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--news-shadow-hover);
+}
+
+.logo-box {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 15px;
+  border-bottom: 1px solid var(--news-border);
+}
+
+.logo-box img {
+  max-width: 100%;
+  max-height: 70px;
+  object-fit: contain;
+}
+
+.telugu-logo {
+  font-family: 'Ponnala', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #162033;
+}
+
+.card-content {
+  padding: 18px;
+  text-align: center;
+}
+
+.card-content h3 {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--news-text);
+}
+
+.card-content p {
+  font-size: 13px;
+  color: var(--news-muted);
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.badge.news {
+  background: var(--news-badge-news);
+  color: #fff;
+}
+
+.badge.epaper {
+  background: var(--news-badge-epaper);
+  color: #000;
+}
+
+@media (max-width: 400px) {
+  .section {
+    padding: 30px 16px;
+  }
+  .section-title {
+    font-size: 1.35rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  
+}
+
+
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+  
+  <nav>
+    <ul class="nav-links">
+      <li><a href="index.html"><i class="fas fa-house"></i>Home</a></li>
+      <li><a href="government.html"><i class="fas fa-landmark"></i>Government</a></li>
+      <li><a href="educational.html"><i class="fas fa-graduation-cap"></i>Education</a></li>
+      <li><a href="jobs.html"><i class="fas fa-briefcase"></i>Jobs</a></li>
+      <li><a href="newspapers.html"><i class="fas fa-newspaper"></i>News</a></li>
+      <li><a href="tools.html"><i class="fas fa-tools"></i>Tools</a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i>Contact</a></li>
+    </ul>
+  </nav>
+
+  <form class="search-area" role="search" action="search.html">
+    <input type="search" id="searchInput" name="q" placeholder="Search all services..." autocomplete="off">
+    <button type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
+  </form>
+</header>
+
+
+
+<section class="section">
+  <h1 class="section-title">Main page</h1>
+</section>
+
+<!-- TELUGU EPAPERS -->
+<section class="section">
+  <h2 class="section-title">📑 Telugu E-Papers</h2>
+  <div class="grid" id="cardContainer">
+    <a class="card" href="https://epaper.eenadu.net" target="_blank">
+      <div class="logo-box"><div class="telugu-logo">ఈనాడు</div></div>
+      <div class="card-content">
+        <span class="badge epaper">PAPER</span><h3>Eenadu Paper</h3>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- TELUGU NEWS -->
+<section class="section">
+  <h2 class="section-title">📰 Telugu News Websites</h2>
+  <div class="grid">
+    <a class="card" href="https://www.eenadu.net" target="_blank">
+      <div class="logo-box"><div class="telugu-logo">ఈనాడు</div></div>
+      <div class="card-content">
+        <span class="badge news">NEWS</span><h3>Eenadu</h3>
+      </div>
+    </a>
+
+      </div>
+</section>
+
+<!-- ENGLISH EPAPERS -->
+<section class="section">
+  <h2 class="section-title">📄 English E-Papers</h2>
+  <div class="grid">
+    <a class="card" href="https://epaper.thehindu.com/" target="_blank">
+      <div class="logo-box"><img src="https://epaper.thehindu.com/logo/th_ep_logo.svg" alt="The Hindu Logo"></div>
+      <div class="card-content">
+        <span class="badge epaper">PAPER</span><h3>The Hindu Epaper</h3>
+      </div>
+    </a>
+
+    
+  </div>
+</section>
+
+<!-- ENGLISH NEWS -->
+<section class="section">
+  <h2 class="section-title">🌎 English News Websites</h2>
+  <div class="grid">
+    <a class="card" href="https://www.thehindu.com" target="_blank">
+      <div class="logo-box"><img src="https://www.thehindu.com/theme/images/th-online/thehindu-logo.svg" alt="The Hindu"></div>
+      <div class="card-content">
+        <span class="badge news">NEWS</span><h3>The Hindu</h3><p>Analytical Journalism</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+
+<footer>
+  <h3>Venkat Insights</h3>
+  <p>Government Services | Education | Jobs | News | Tools</p>
+  <p>Copyright (c) 2026 Venkat Insights | Developed by Venkatesh Kothapally</p>
+</footer>
+
+<button id="darkModeBtn" class="dark-toggle" aria-label="Toggle dark mode">⏾</button>
+
+<script src="search-data.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
+
