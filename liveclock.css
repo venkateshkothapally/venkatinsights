@@ -1,0 +1,48 @@
+/* ==========================
+   Live clock CSS
+========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --brand-dark: #0b3157;
+    --text: #1f2933;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ==========================
+   Live Clock
+========================== */
+
+#liveClock {
+    position: fixed;
+    left: 30px;
+    bottom: 30px;
+
+    padding: 8px 12px;
+
+    background: var(--brand-dark);
+    color: #ffffff;
+
+    border-radius: 8px;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.24);
+
+    font-size: 13px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    line-height: 20px;
+
+    z-index: 9998;
+
+    user-select: none;
+    white-space: nowrap;
+}
