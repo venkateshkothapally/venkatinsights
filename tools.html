@@ -105,7 +105,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <div class="service-card green">
 <h3>Image Resizer</h3>
-<a href="https://imageresizer.com/">Open</a>
+<a href="image resizer.html">Open</a>
 </div>
 
 
@@ -269,6 +269,32 @@ Developed by Venkatesh Kothapally
 </p>
 
 </footer>
+
+
+
+
+<!-- Live Clock -->
+<div id="liveClock" aria-hidden="true"></div>
+
+<script>
+function updateClock() {
+    document.getElementById("liveClock").textContent =
+        new Date().toLocaleString("en-IN", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
+        });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+
 
 <button id="darkModeBtn" class="dark-toggle" aria-label="Toggle dark mode">D</button>
 

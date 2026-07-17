@@ -80,9 +80,8 @@
   add({ title: "Age Calculator", page: "index.html", category: "Useful Tools" });
   add({ title: "Percentage Calculator", page: "index.html", category: "Useful Tools" });
 
-  // =========================
-  // government.html (cards)
-  // =========================
+  add({ title: "About Venkat Insights", page: "about.html", category: "About" });
+  add({ title: "Contact", page: "contact.html", category: "Contact" });
   const governmentCards = [
     // Aadhaar Services
     ["UIDAI", "Aadhaar Services"],

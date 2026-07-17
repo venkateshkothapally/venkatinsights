@@ -1026,6 +1026,32 @@ Developed by Venkatesh Kothapally
 
 </footer>
 
+
+
+
+<!-- Live Clock -->
+<div id="liveClock" aria-hidden="true"></div>
+
+<script>
+function updateClock() {
+    document.getElementById("liveClock").textContent =
+        new Date().toLocaleString("en-IN", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
+        });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+
+
 <button id="darkModeBtn" class="dark-toggle" aria-label="Toggle dark mode">⏾</button>
 
 <script src="search-data.js"></script>

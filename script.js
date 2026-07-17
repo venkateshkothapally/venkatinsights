@@ -7,8 +7,104 @@
 
 const darkBtn = document.getElementById("darkModeBtn");
 const searchInput = document.getElementById("searchInput");
-const searchIndex = window.SITE_SEARCH_INDEX || []; // Note: emergency cards keywords are also handled via portal HTML.
+const searchIndex = window.SITE_SEARCH_INDEX || [];
 const SEARCH_HIGHLIGHT_MS = 7000;
+
+function initLogoLink() {
+    document.querySelectorAll(".navbar .logo").forEach((logo) => {
+        if (logo.closest("a")) return;
+        const link = document.createElement("a");
+        link.href = "index.html";
+        link.className = "logo-link logo";
+        link.innerHTML = logo.innerHTML;
+        link.setAttribute("aria-label", "Venkat Insights Home");
+        logo.replaceWith(link);
+    });
+}
+
+function initMobileNav() {
+    const navbar = document.querySelector(".navbar");
+    const nav = navbar?.querySelector("nav");
+    if (!navbar || !nav || navbar.querySelector(".nav-toggle")) return;
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "nav-toggle";
+    toggle.setAttribute("aria-label", "Toggle navigation menu");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.innerHTML = '<i class="fas fa-bars" aria-hidden="true"></i>';
+
+    const logo = navbar.querySelector(".logo, .logo-link");
+    logo?.after(toggle);
+
+    toggle.addEventListener("click", () => {
+        const open = nav.classList.toggle("is-open");
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.innerHTML = open
+            ? '<i class="fas fa-xmark" aria-hidden="true"></i>'
+            : '<i class="fas fa-bars" aria-hidden="true"></i>';
+    });
+
+    nav.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+            nav.classList.remove("is-open");
+            toggle.setAttribute("aria-expanded", "false");
+            toggle.innerHTML = '<i class="fas fa-bars" aria-hidden="true"></i>';
+        });
+    });
+}
+
+function initEnhancedFooter() {
+    document.querySelectorAll("footer").forEach((footer) => {
+        if (footer.querySelector(".footer-grid")) return;
+
+        const heading = footer.querySelector("h3")?.textContent || "Venkat Insights";
+        const paragraphs = [...footer.querySelectorAll("p")];
+        const copyright = paragraphs.find((p) => /copyright/i.test(p.textContent))?.textContent
+            || "Copyright © 2026 Venkat Insights | Developed by Venkatesh Kothapally";
+
+        footer.innerHTML = `
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>${heading}</h3>
+                    <p>Your trusted portal for government services, education, jobs, news, and online tools.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Portal</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="government.html">Government</a></li>
+                        <li><a href="educational.html">Education</a></li>
+                        <li><a href="jobs.html">Jobs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>More</h4>
+                    <ul>
+                        <li><a href="newspapers.html">News Papers</a></li>
+                        <li><a href="tools.html">Tools</a></li>
+                        <li><a href="search.html">Search</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="https://www.facebook.com/venkatinsights" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+                        <li><a href="https://www.instagram.com/venkatinsights/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+                        <li><a href="https://x.com/Venkatinsights" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom"><p>${copyright}</p></div>
+        `;
+    });
+}
+
+initLogoLink();
+initMobileNav();
+initEnhancedFooter();
 
 function normalizeText(value) {
     return String(value || "")
@@ -511,9 +607,8 @@ function initializeNewspaperSearchHighlight() {
 
 function initializeCards() {
     const page = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
-    // IMPORTANT: contact.html must remain completely unmodified.
-    // Do not inject Open buttons, expand/collapse controls, card-actions/details, etc.
-    if (page === "contact.html") return;
+    // IMPORTANT: contact.html and about.html must remain clean profile pages.
+    if (page === "contact.html" || page === "about.html") return;
 
     // Ensure we only enable the modal system on jobs.html (per your request).
     document.body.dataset.modalEnabled = page === "jobs.html" ? "true" : "false";
@@ -796,7 +891,11 @@ topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smoo
     triggerGlow(card);
     const href = card.getAttribute("data-redirect");
     if (href && href !== "") {
-      window.location.href = href;
+      if (/^https?:\/\//i.test(href)) {
+        window.open(href, "_blank", "noopener,noreferrer");
+      } else {
+        window.location.href = href;
+      }
     }
   }, true);
 
@@ -808,7 +907,11 @@ topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smoo
     triggerGlow(card);
     const href = card.getAttribute("data-redirect");
     if (href && href !== "") {
-      window.location.href = href;
+      if (/^https?:\/\//i.test(href)) {
+        window.open(href, "_blank", "noopener,noreferrer");
+      } else {
+        window.location.href = href;
+      }
     }
   });
 })();

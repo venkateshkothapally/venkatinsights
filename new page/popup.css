@@ -1,0 +1,933 @@
+/* ==========================================
+   ROOT VARIABLES
+========================================== */
+
+:root{
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --secondary:#0f172a;
+    --accent:#38bdf8;
+
+    --success:#16a34a;
+    --warning:#f59e0b;
+    --danger:#ef4444;
+
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#1f2937;
+    --text-light:#64748b;
+
+    --border:#dbe4ee;
+
+    --shadow:0 10px 30px rgba(0,0,0,.12);
+    --shadow-hover:0 18px 45px rgba(37,99,235,.25);
+
+    --radius:18px;
+    --transition:.35s ease;
+}
+
+
+/* ==========================================
+   RESET
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:var(--bg);
+
+    font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+    color:var(--text);
+
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.top-header{
+
+    width:100%;
+
+    background:white;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+    padding:20px 8%;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:500;
+
+}
+
+.logo-section{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.header-logo{
+
+    width:65px;
+
+}
+
+.logo-section h1{
+
+    font-size:30px;
+
+    color:#0f172a;
+
+}
+
+.logo-section p{
+
+    color:#64748b;
+
+    margin-top:5px;
+
+}
+
+
+/* ==========================================
+   MAIN CONTAINER
+========================================== */
+
+.container{
+
+    width:min(1400px,95%);
+
+    margin:45px auto;
+
+}
+
+.section-title{
+
+    margin-bottom:30px;
+
+}
+
+.section-title h2{
+
+    font-size:30px;
+
+    color:#0f172a;
+
+}
+
+
+/* ==========================================
+   GRID
+========================================== */
+
+.exam-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(auto-fill,minmax(300px,1fr));
+
+    gap:28px;
+
+}
+
+
+/* ==========================================
+   CARD
+========================================== */
+
+.exam-card{
+
+    background:rgba(255,255,255,.90);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow);
+
+    border:1px solid rgba(255,255,255,.4);
+
+    transition:var(--transition);
+
+    cursor:pointer;
+
+    position:relative;
+
+}
+
+.exam-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:6px;
+
+    height:100%;
+
+    background:linear-gradient(
+
+        to bottom,
+
+        #2563eb,
+
+        #38bdf8
+
+    );
+
+}
+
+.exam-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:var(--shadow-hover);
+
+}
+
+
+/* ==========================================
+   CARD HEADER
+========================================== */
+
+.card-header{
+
+    padding:20px;
+
+}
+
+.title-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.exam-logo{
+
+    width:42px;
+
+}
+
+.title-box h3{
+
+    font-size:22px;
+
+    color:#0f172a;
+
+    flex:1;
+
+}
+
+.new-badge{
+
+    width:55px;
+
+}
+
+
+/* ==========================================
+   CARD BODY
+========================================== */
+
+.card-content{
+
+    padding:0 20px 18px;
+
+}
+
+.status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:8px 16px;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.admission{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
+.application{
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+}
+
+.registration{
+
+    background:#ede9fe;
+
+    color:#7c3aed;
+
+}
+
+.notification{
+
+    background:#fef3c7;
+
+    color:#b45309;
+
+}
+
+.result{
+
+    background:#fee2e2;
+
+    color:#b91c1c;
+
+}
+
+
+/* ==========================================
+   CARD FOOTER
+========================================== */
+
+.card-footer{
+
+    padding:20px;
+
+}
+
+.openBtn{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+
+        135deg,
+
+        #2563eb,
+
+        #3b82f6
+
+    );
+
+    color:white;
+
+    padding:14px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+.openBtn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 25px rgba(37,99,235,.35);
+
+}
+
+.openBtn i{
+
+    margin-right:10px;
+
+}
+
+
+/* ==========================================
+   SHINY EFFECT
+========================================== */
+
+.exam-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:-120%;
+
+    left:-80%;
+
+    width:60%;
+
+    height:280%;
+
+    background:rgba(255,255,255,.35);
+
+    transform:rotate(30deg);
+
+    transition:.8s;
+
+}
+
+.exam-card:hover::after{
+
+    left:150%;
+
+}
+
+
+/* ==========================================
+   FLOATING NEW BADGE
+========================================== */
+
+.new-badge{
+
+    animation:floating 2.2s infinite;
+
+}
+
+@keyframes floating{
+
+0%,100%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-4px);
+
+}
+
+}
+
+
+/* ==========================================
+   OVERLAY
+========================================== */
+
+#overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(4px);
+    opacity:0;
+    visibility:hidden;
+    transition:.35s ease;
+    z-index:998;
+}
+
+#overlay.active{
+    opacity:1;
+    visibility:visible;
+}
+
+
+/* ==========================================
+   RIGHT SLIDE POPUP
+========================================== */
+
+#popup{
+    position:fixed;
+    top:0;
+    right:-480px;
+    width:420px;
+    max-width:95%;
+    height:100vh;
+
+    background:rgba(255,255,255,.96);
+    backdrop-filter:blur(18px);
+
+    box-shadow:-15px 0 40px rgba(0,0,0,.18);
+
+    transition:right .45s ease;
+
+    z-index:999;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow-y:auto;
+}
+
+#popup.active{
+    right:0;
+}
+
+
+/* ==========================================
+   POPUP HEADER
+========================================== */
+
+.popup-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+    padding:28px;
+
+    border-bottom:1px solid #e5e7eb;
+
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+
+    color:white;
+}
+
+.popup-header h2{
+
+    font-size:28px;
+    margin-bottom:6px;
+}
+
+.popup-header small{
+
+    opacity:.9;
+    font-size:15px;
+}
+
+#closePopup{
+
+    width:42px;
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:rgba(255,255,255,.18);
+
+    color:white;
+
+    font-size:20px;
+
+    transition:.3s;
+}
+
+#closePopup:hover{
+
+    transform:rotate(90deg);
+
+    background:white;
+
+    color:#2563eb;
+}
+
+
+/* ==========================================
+   DESCRIPTION
+========================================== */
+
+#popupDesc{
+
+    padding:25px;
+
+    color:#475569;
+
+    font-size:15px;
+
+    line-height:1.8;
+
+    border-bottom:1px solid #edf2f7;
+}
+
+
+/* ==========================================
+   POPUP LINKS
+========================================== */
+
+.popup-links{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    padding:25px;
+}
+
+.popup-links a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    text-decoration:none;
+
+    color:#1f2937;
+
+    background:white;
+
+    border:1px solid #dbe4ee;
+
+    border-radius:14px;
+
+    padding:16px 18px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
+}
+
+.popup-links a i{
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#eff6ff;
+
+    color:#2563eb;
+
+    font-size:18px;
+
+    transition:.3s;
+}
+
+.popup-links a:hover{
+
+    transform:translateX(8px);
+
+    background:#2563eb;
+
+    color:white;
+
+    box-shadow:0 12px 30px rgba(37,99,235,.28);
+}
+
+.popup-links a:hover i{
+
+    background:white;
+
+    color:#2563eb;
+}
+
+
+/* ==========================================
+   CUSTOM SCROLLBAR
+========================================== */
+
+#popup::-webkit-scrollbar{
+
+    width:8px;
+}
+
+#popup::-webkit-scrollbar-track{
+
+    background:#eef2f7;
+}
+
+#popup::-webkit-scrollbar-thumb{
+
+    background:#2563eb;
+
+    border-radius:20px;
+}
+
+#popup::-webkit-scrollbar-thumb:hover{
+
+    background:#1d4ed8;
+}
+
+
+/* ==========================================
+   CARD RIPPLE EFFECT
+========================================== */
+
+.openBtn{
+    position:relative;
+    overflow:hidden;
+}
+
+.openBtn::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:0;
+    height:0;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.35);
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    transition:.55s;
+}
+
+.openBtn:active::after{
+
+    width:320px;
+    height:320px;
+}
+
+
+/* ==========================================
+   HOVER GLOW
+========================================== */
+
+.exam-card:hover{
+
+    border:1px solid rgba(37,99,235,.25);
+}
+
+.exam-card:hover .title-box h3{
+
+    color:#2563eb;
+}
+
+
+/* ==========================================
+   FADE ANIMATION
+========================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.exam-card{
+
+    animation:fadeUp .6s ease;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:992px){
+
+    .exam-grid{
+
+        grid-template-columns:
+        repeat(auto-fill,minmax(270px,1fr));
+
+    }
+
+    #popup{
+
+        width:380px;
+
+    }
+
+}
+
+
+@media(max-width:768px){
+
+    .top-header{
+
+        padding:18px;
+
+    }
+
+    .logo-section{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .logo-section h1{
+
+        font-size:24px;
+
+    }
+
+    .container{
+
+        width:94%;
+
+    }
+
+    .exam-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    #popup{
+
+        width:100%;
+        right:-100%;
+    }
+
+}
+
+
+@media(max-width:480px){
+
+    .title-box h3{
+
+        font-size:18px;
+
+    }
+
+    .new-badge{
+
+        width:45px;
+
+    }
+
+    .popup-header{
+
+        padding:22px;
+
+    }
+
+    .popup-links{
+
+        padding:18px;
+
+    }
+
+    .popup-links a{
+
+        font-size:15px;
+
+        padding:14px;
+
+    }
+
+}
+
+
+/* ==========================================
+   DARK MODE (Optional)
+========================================== */
+
+body.dark{
+
+    background:#0f172a;
+    color:#f8fafc;
+}
+
+body.dark .top-header{
+
+    background:#1e293b;
+}
+
+body.dark .exam-card{
+
+    background:#1e293b;
+
+    color:white;
+
+    border-color:#334155;
+}
+
+body.dark .title-box h3{
+
+    color:white;
+}
+
+body.dark #popup{
+
+    background:#0f172a;
+
+    color:white;
+}
+
+body.dark #popupDesc{
+
+    color:#cbd5e1;
+
+    border-color:#334155;
+}
+
+body.dark .popup-links a{
+
+    background:#1e293b;
+
+    color:white;
+
+    border-color:#334155;
+}
+
+body.dark .popup-links a i{
+
+    background:#2563eb;
+
+    color:white;
+}
+
+
+/* ==========================================
+   END OF popup.css
+========================================== */
